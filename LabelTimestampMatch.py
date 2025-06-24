@@ -32,9 +32,17 @@ def extract_timestamps(vid_path):
     tracks = [track_1, track_2, track_3]
 
     timestamps = None
+    real_frame_status = []
     for track in tracks:
         if "." in track[0]:
             timestamps = [float(x) for x in track]
+        else:
+            # Only get frames with a frame status of 0 (frames that were recorded)
+            try:
+                real_frame_status = [int(x) for x in track]
+            except:
+                pass
+    timestamps = [timestamps[i] for i in range(len(timestamps)) if real_frame_status[i]==0]
     return timestamps
 
 def update_csv_column(file_name, column_name, new_values):
